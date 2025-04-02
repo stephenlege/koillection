@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Collection;
+use App\Entity\Item;
+use App\Entity\Datum;
 use App\Enum\DatumTypeEnum;
 use App\Enum\ReservedLabelEnum;
 use App\Form\Type\Entity\CollectionType;
@@ -27,6 +29,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CollectionController extends AbstractController
 {
@@ -270,7 +273,7 @@ class CollectionController extends AbstractController
             foreach ($rows as $row) {
                 if (empty($row[0])) continue; // Skip empty rows
 
-                $item = new \App\Entity\Item();
+                $item = new Item();
                 $item->setCollection($collection);
                 $item->setName($row[0]); // First column is always the name
 
@@ -280,7 +283,7 @@ class CollectionController extends AbstractController
                     $dataFields = $collection->getData();
                     foreach ($dataFields as $index => $field) {
                         if (isset($row[$index + 1])) {
-                            $datum = new \App\Entity\Datum();
+                            $datum = new Datum();
                             $datum->setLabel($field->getLabel());
                             $datum->setType($field->getType());
                             $datum->setValue($row[$index + 1]);
