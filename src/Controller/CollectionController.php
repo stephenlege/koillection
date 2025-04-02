@@ -24,6 +24,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Xls;
 
 class CollectionController extends AbstractController
 {
@@ -227,5 +230,80 @@ class CollectionController extends AbstractController
             'form' => $form,
             'collection' => $collection,
         ]);
+    }
+
+    #[Route(path: '/collections/{id}/import-excel', name: 'app_collection_import_excel', methods: ['POST'])]
+    public function importExcel(
+        Request $request,
+        Collection $collection,
+        TranslatorInterface $translator,
+        ManagerRegistry $managerRegistry
+    ): Response {
+        $file = $request->files->get('excel_file');
+        if (!$file) {
+            $this->addFlash('error', $translator->trans('error.no_file_uploaded'));
+            return $this->redirectToRoute('app_collection_show', ['id' => $collection->getId()]);
+        }
+
+        $mapping = $request->request->get('mapping', 'auto');
+        $fileExtension = strtolower($file->getClientOriginalExtension());
+
+        try {
+            if ($fileExtension === 'xlsx') {
+                $reader = new Xlsx();
+            } elseif ($fileExtension === 'xls') {
+                $reader = new Xls();
+            } else {
+                throw new \Exception($translator->trans('error.invalid_file_type'));
+            }
+
+            $spreadsheet = $reader->load($file->getPathname());
+            $worksheet = $spreadsheet->getActiveSheet();
+            $rows = $worksheet->toArray();
+
+            // Skip header row
+            array_shift($rows);
+
+            $em = $managerRegistry->getManager();
+            $importedCount = 0;
+
+            foreach ($rows as $row) {
+                if (empty($row[0])) continue; // Skip empty rows
+
+                $item = new \App\Entity\Item();
+                $item->setCollection($collection);
+                $item->setName($row[0]); // First column is always the name
+
+                // Add other fields based on mapping
+                if ($mapping === 'auto') {
+                    // Auto-detect columns based on collection's data fields
+                    $dataFields = $collection->getData();
+                    foreach ($dataFields as $index => $field) {
+                        if (isset($row[$index + 1])) {
+                            $datum = new \App\Entity\Datum();
+                            $datum->setLabel($field->getLabel());
+                            $datum->setType($field->getType());
+                            $datum->setValue($row[$index + 1]);
+                            $datum->setItem($item);
+                            $em->persist($datum);
+                        }
+                    }
+                } else {
+                    // Manual mapping - to be implemented
+                    // This would require a form to map Excel columns to data fields
+                }
+
+                $em->persist($item);
+                $importedCount++;
+            }
+
+            $em->flush();
+            $this->addFlash('notice', $translator->trans('message.items_imported', ['count' => $importedCount]));
+
+        } catch (\Exception $e) {
+            $this->addFlash('error', $translator->trans('error.import_failed', ['error' => $e->getMessage()]));
+        }
+
+        return $this->redirectToRoute('app_collection_show', ['id' => $collection->getId()]);
     }
 }

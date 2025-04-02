@@ -75,6 +75,10 @@
                            title="{{ 'tooltip.items'|trans }}">
                             <i class="fa fa-ellipsis-h fa-fw"></i>
                         </a>
+                        <button class="button" data-action="click->modal#open" data-modal-target="excelImportModal"
+                                title="{{ 'tooltip.import_excel'|trans }}">
+                            <i class="fa fa-file-excel-o fa-fw"></i>
+                        </button>
                         {{ include('App/_partials/_visibility.html.twig', {'visibility': collection.finalVisibility}) }}
                     {% endif %}
                 </div>
@@ -140,5 +144,31 @@
 
 {% block footer %}
     {{ renderFooter(collection) }}
+{% endblock %}
+
+{% block modals %}
+    {{ parent() }}
+    <div class="modal" data-controller="modal" data-modal-target="excelImportModal">
+        <div class="modal-content">
+            <h2>{{ 'title.import_excel'|trans }}</h2>
+            <form action="{{ path('app_collection_import_excel', {'id': collection.id}) }}" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="excel_file">{{ 'label.excel_file'|trans }}</label>
+                    <input type="file" id="excel_file" name="excel_file" accept=".xlsx,.xls" required>
+                </div>
+                <div class="form-group">
+                    <label for="mapping">{{ 'label.column_mapping'|trans }}</label>
+                    <select id="mapping" name="mapping" required>
+                        <option value="auto">{{ 'label.auto_mapping'|trans }}</option>
+                        <option value="manual">{{ 'label.manual_mapping'|trans }}</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="button">{{ 'label.import'|trans }}</button>
+                    <button type="button" class="button" data-action="click->modal#close">{{ 'label.cancel'|trans }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 

@@ -199,6 +199,72 @@
         <target>{count, plural, one {# tag deleted} other {# tags deleted}}</target>
       </segment>
     </unit>
+    <unit id="excel_import_title" name="title.import_excel">
+      <segment state="translated">
+        <source>Import from Excel</source>
+        <target>Import from Excel</target>
+      </segment>
+    </unit>
+    <unit id="excel_import_label" name="label.excel_file">
+      <segment state="translated">
+        <source>Excel File</source>
+        <target>Excel File</target>
+      </segment>
+    </unit>
+    <unit id="excel_mapping_label" name="label.column_mapping">
+      <segment state="translated">
+        <source>Column Mapping</source>
+        <target>Column Mapping</target>
+      </segment>
+    </unit>
+    <unit id="excel_auto_mapping" name="label.auto_mapping">
+      <segment state="translated">
+        <source>Auto-detect columns</source>
+        <target>Auto-detect columns</target>
+      </segment>
+    </unit>
+    <unit id="excel_manual_mapping" name="label.manual_mapping">
+      <segment state="translated">
+        <source>Manual mapping</source>
+        <target>Manual mapping</target>
+      </segment>
+    </unit>
+    <unit id="excel_import_button" name="label.import">
+      <segment state="translated">
+        <source>Import</source>
+        <target>Import</target>
+      </segment>
+    </unit>
+    <unit id="excel_import_tooltip" name="tooltip.import_excel">
+      <segment state="translated">
+        <source>Import items from Excel file</source>
+        <target>Import items from Excel file</target>
+      </segment>
+    </unit>
+    <unit id="excel_import_error_no_file" name="error.no_file_uploaded">
+      <segment state="translated">
+        <source>No file was uploaded</source>
+        <target>No file was uploaded</target>
+      </segment>
+    </unit>
+    <unit id="excel_import_error_invalid_type" name="error.invalid_file_type">
+      <segment state="translated">
+        <source>Invalid file type. Please upload an Excel file (.xlsx or .xls)</source>
+        <target>Invalid file type. Please upload an Excel file (.xlsx or .xls)</target>
+      </segment>
+    </unit>
+    <unit id="excel_import_error_failed" name="error.import_failed">
+      <segment state="translated">
+        <source>Import failed: {error}</source>
+        <target>Import failed: {error}</target>
+      </segment>
+    </unit>
+    <unit id="excel_import_success" name="message.items_imported">
+      <segment state="translated">
+        <source>{count, plural, one {# item imported} other {# items imported}}</source>
+        <target>{count, plural, one {# item imported} other {# items imported}}</target>
+      </segment>
+    </unit>
     <unit id="xM.mW1R" name="message.template_added">
       <segment state="translated">
         <source>Template {template} has been added</source>
