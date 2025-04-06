@@ -93,3 +93,38 @@ You are also welcome if you want to proofread existing translations.
 
 ## Licensing
 Koillection is an Open Source software, released under the MIT License. 
+
+## Local Development with Docker
+
+These instructions are for setting up a local development environment using Docker, allowing you to work on the codebase. For regular installation, see the Installation page in the wiki.
+
+1.  **Prerequisites:** Ensure you have Docker and Docker Compose installed and running.
+2.  **File Sharing (macOS/Windows):** In Docker Desktop settings (Resources -> File Sharing), make sure the directory containing the `koillection` project (e.g., `/Users/your_user/Repos` or the specific `/Users/your_user/Repos/koillection` path) is added to the file sharing list. Apply & Restart Docker if you make changes.
+3.  **Copy Compose File:** In the project's root directory, copy the distribution compose file:
+    ```bash
+    cp docker-compose.dist.yml docker-compose.yml
+    ```
+4.  **Build & Start Containers:** Build the images and start the services (this might take a while the first time):
+    ```bash
+    docker-compose up -d --build
+    ```
+    *The entrypoint script for the `koillection` service will automatically run `composer install` and database migrations.*
+5.  **Install Frontend Dependencies:** Run the installation inside the `assets` directory within the container (use `npm install --legacy-peer-deps` if you don't have `yarn`):
+    ```bash
+    docker-compose exec -w /var/www/koillection/assets koillection yarn install
+    # OR
+    # docker-compose exec -w /var/www/koillection/assets koillection npm install --legacy-peer-deps
+    ```
+6.  **Build Frontend Assets:** Build the assets inside the container:
+    ```bash
+    docker-compose exec -w /var/www/koillection/assets koillection yarn build
+    # OR
+    # docker-compose exec -w /var/www/koillection/assets koillection npm run build
+    ```
+7.  **Access Application:** Open your browser and navigate to `http://localhost:81` (or the host port mapped to container port 80 in your `docker-compose.yml`). You should see the first-connection setup or login page.
+
+**Starting/Stopping:**
+
+*   To start the environment later: `docker-compose up -d`
+*   To stop the environment: `docker-compose down`
+*   To stop and remove persistent data (database, uploads): `docker-compose down -v`
