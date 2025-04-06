@@ -128,3 +128,45 @@ These instructions are for setting up a local development environment using Dock
 *   To start the environment later: `docker-compose up -d`
 *   To stop the environment: `docker-compose down`
 *   To stop and remove persistent data (database, uploads): `docker-compose down -v`
+
+## Excel Import Feature
+
+Koillection supports importing items from Excel files (.xlsx or .xls) into collections. This feature allows you to quickly add multiple items with their associated data.
+
+### How to Use Excel Import
+
+1. Navigate to any collection's detail page
+2. Click the "Import Excel" button
+3. Upload your Excel file with the following format:
+   - First row: Column headers (matching your collection's field names)
+   - Subsequent rows: Item data
+   - Example format:
+     ```
+     Name | Series Number | Price | Type | Description
+     -----|--------------|-------|------|-------------
+     The Blade Itself | 1 | 12.99 | Fantasy | First book in the series
+     ```
+
+### Template Download
+
+You can download a template Excel file that matches your collection's structure:
+1. Click the "Download Template" button
+2. The downloaded file will include:
+   - Column headers matching your collection's fields
+   - A sample row showing the expected format
+   - All necessary columns for your collection's data structure
+
+### Import Process
+
+The import process automatically:
+- Matches Excel columns to your collection's fields
+- Preserves field types (text, number, date, etc.)
+- Creates new items with the imported data
+- Provides feedback on successful imports and any skipped columns
+
+### Notes
+- The first row of your Excel file must contain headers
+- Headers should match your collection's field names (case-insensitive)
+- Unmatched columns will be skipped (with notification)
+- All standard item fields (name, description, quantity) are supported
+- Custom fields (Datums) are matched based on their labels
