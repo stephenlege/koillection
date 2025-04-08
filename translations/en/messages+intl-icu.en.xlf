@@ -3859,5 +3859,11 @@
         <target>Collection</target>
       </segment>
     </unit>
+    <unit id="menu.import_excel" name="menu.import_excel">
+      <segment state="translated">
+        <source>menu.import_excel</source>
+        <target>Import Excel</target>
+      </segment>
+    </unit>
   </file>
 </xliff>

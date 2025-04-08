@@ -1,0 +1,22 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'menu.import_excel'|trans }} - {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('app_homepage'|applyContext) }}">{{ 'menu.dashboard'|trans }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ 'menu.import_excel'|trans }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>{{ 'menu.import_excel'|trans }}</h1>
+            <p>Import functionality will be implemented here.</p>
+            {# Form for uploading Excel file and selecting collection will go here #}
+        </div>
+    </div>
+{% endblock %} 
