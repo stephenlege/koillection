@@ -27,6 +27,13 @@
     </a>
 </li>
 
+<li class="{{ 'app_import' in route ? 'current' }} sidebar-element">
+    <a href="{{ path('app_import_excel') }}">
+        <i class="fa fa-file-excel-o fa-fw"></i>
+        <span>{{ 'menu.import_excel'|trans }}</span>
+    </a>
+</li>
+
 {% if isFeatureEnabled('wishlists') %}
     <li class="{{ 'app_wishlist' in route or 'app_wish' in route ? 'current' }} sidebar-element">
         <a href="{{ path('app_wishlist_index') }}">
